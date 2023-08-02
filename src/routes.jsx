@@ -25,7 +25,12 @@ const RoutesComponent = ({ weatherData, forecastData, handleSearch }) => {
     },
     {
       path: "/forecast",
-      element: <Forecast forecastData={forecastData} city={forecastData && forecastData[0] && forecastData[0].name} />, // Pass the city prop to the Forecast component
+      element: (
+        <Forecast
+          forecastData={forecastData}
+          city={forecastData && forecastData[0] && forecastData[0].name}
+        />
+      ), // Pass the city prop to the Forecast component
     },
     {
       path: "/weather-details/:id",

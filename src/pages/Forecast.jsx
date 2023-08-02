@@ -6,9 +6,9 @@ const Forecast = ({ forecastData, apiKey, city }) => {
   if (forecastData) {
     return (
       <div className='forecast-list'>
-        <Link to={`/weather-details/${city}`}>
+        <a href='#' onClick={() => window.history.back()}>
           Back to detailed forecast for the day
-        </Link>
+        </a>
         {forecastData.map((data, index) => {
           // Only take the data from the 12:00 time slot for the next 5 days
           if (index % 8 === 0) {
