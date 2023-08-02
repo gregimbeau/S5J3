@@ -5,16 +5,19 @@ const Forecast = ({ forecastData }) => {
   if (forecastData) {
     return (
       <div>
-        <h2>Prévisions pour {forecastData.date}</h2>
-        <p>Température : {forecastData.temp}</p>
-        <p>Température ressentie : {forecastData.feels_like}</p>
-        <p>Pression : {forecastData.pressure}</p>
-        <p>Humidité : {forecastData.humidity}</p>
-        <p>Vent : {forecastData.wind_speed}</p>
-        <p>
-          Conditions météorologiques : {forecastData.weather[0].description}
-        </p>
-        {/* Ajoutez ici d'autres informations météorologiques que vous souhaitez afficher */}
+        <h2>Prévisions pour les 5 prochains jours</h2>
+        {forecastData.map((data) => (
+          <div key={data.date}>
+            <h3>{data.date}</h3>
+            <p>Température : {data.temp}</p>
+            <p>Température ressentie : {data.feels_like}</p>
+            <p>Pression : {data.pressure}</p>
+            <p>Humidité : {data.humidity}</p>
+            <p>Vent : {data.wind_speed}</p>
+            <p>Conditions météorologiques : {data.weather[0].description}</p>
+            {/* Ajoutez ici d'autres informations météorologiques que vous souhaitez afficher */}
+          </div>
+        ))}
       </div>
     );
   }

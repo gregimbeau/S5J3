@@ -8,9 +8,29 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [weatherData, setWeatherData] = useState(null);
 
-  const handleSearch = (term) => {
-    setSearchTerm(term);
-  };
+const handleSearch = (term) => {
+  setSearchTerm(term);
+
+  // Get the current list of cities
+  const cityList = JSON.parse(localStorage.getItem("cities")) || [];
+
+  // If the city is already in the list, remove it
+  const index = cityList.indexOf(term);
+  if (index > -1) {
+    cityList.splice(index, 1);
+  }
+
+  // Add the new city to the beginning of the list
+  cityList.unshift(term);
+
+  // If the list has more than 5 cities, remove the last one
+  if (cityList.length > 5) {
+    cityList.pop();
+  }
+
+  // Store the updated list in localStorage
+  localStorage.setItem("cities", JSON.stringify(cityList));
+};
 
   useEffect(() => {
     if (searchTerm) {
@@ -32,7 +52,7 @@ function App() {
   return (
     <Router>
       <Navbar onSearch={handleSearch} />
-      <RoutesComponent weatherData={weatherData} />
+      <RoutesComponent weatherData={weatherData} handleSearch={handleSearch} />
     </Router>
   );
 }
