@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react"; // import useRef
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; 
-
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = ({ onSearch }) => {
   const [searchValue, setSearchValue] = useState("");
   const [autocompleteResults, setAutocompleteResults] = useState([]);
-  const navigate = useNavigate(); // use navigate instead of history
+  const navigate = useNavigate();
+
+  const dropdownRef = useRef(null); // ref for the dropdown
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -15,15 +16,31 @@ const SearchBar = ({ onSearch }) => {
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     onSearch(searchValue);
-    navigate(`/city/${searchValue}`); // use navigate instead of history.push
+    navigate(`/city/${searchValue}`);
   };
 
   const handleCityClick = (cityName) => {
     onSearch(cityName);
     setSearchValue(cityName);
-    setAutocompleteResults([]); // clear the results after selecting a city
-    navigate(`/city/${cityName}`); // use navigate instead of history.push
+    setAutocompleteResults([]);
+    navigate(`/city/${cityName}`);
   };
+
+  useEffect(() => {
+    // Function to hide dropdown if clicked outside
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setAutocompleteResults([]); // clear the results if clicked outside of the dropdown
+      }
+    };
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []); // Empty array ensures that effect is only run on mount and unmount
 
   useEffect(() => {
     if (searchValue.length >= 3) {
@@ -54,7 +71,7 @@ const SearchBar = ({ onSearch }) => {
         <button type='submit'>Search</button>
       </form>
       {autocompleteResults.length > 0 && (
-        <div className='dropdown-menu'>
+        <div className='dropdown-menu' ref={dropdownRef}>
           <ul>
             {autocompleteResults.map((result) => (
               <li
