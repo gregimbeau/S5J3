@@ -1,0 +1,90 @@
+/* Réinitialisation de certaines valeurs par défaut du navigateur */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Mise en page générale de l'application */
+body {
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f7f7f7;
+}
+
+/* Styles de la barre de navigation */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #333;
+  color: white;
+
+  h1 {
+    font-size: 1.5em;
+  }
+}
+
+/* Styles pour les pages */
+.page-container {
+  padding: 20px;
+
+  .city-name {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+
+  .weather-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .forecast {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+}
+
+/* Styles pour les cartes de prévisions */
+.forecast-card {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+
+  .date {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+}
+
+/* Styles pour la barre de recherche */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  input {
+    width: 200px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
