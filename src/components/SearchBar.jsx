@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; 
+
 
 const SearchBar = ({ onSearch }) => {
   const [searchValue, setSearchValue] = useState("");
   const [autocompleteResults, setAutocompleteResults] = useState([]);
+  const navigate = useNavigate(); // use navigate instead of history
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -12,12 +15,14 @@ const SearchBar = ({ onSearch }) => {
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     onSearch(searchValue);
+    navigate(`/city/${searchValue}`); // use navigate instead of history.push
   };
 
   const handleCityClick = (cityName) => {
     onSearch(cityName);
     setSearchValue(cityName);
     setAutocompleteResults([]); // clear the results after selecting a city
+    navigate(`/city/${cityName}`); // use navigate instead of history.push
   };
 
   useEffect(() => {

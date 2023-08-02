@@ -20,7 +20,7 @@ const RoutesComponent = ({ apiKey }) => {
     {
       // Update the route for city-specific views
       path: "/city/:city",
-      element: <City />,
+      element: <City apiKey={apiKey} />,
     },
     {
       // Add a route for the WeatherDetails view

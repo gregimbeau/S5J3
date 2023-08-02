@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Forecast from "./Forecast";
 
-const City = () => {
+const City = ({ apiKey }) => {
   const { city } = useParams();
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState(null);
@@ -12,9 +12,7 @@ const City = () => {
   useEffect(() => {
     if (city) {
       fetch(
-        `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${
-          import.meta.env.VITE_API_KEY
-        }`
+        `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -26,9 +24,7 @@ const City = () => {
         });
 
       fetch(
-        `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${
-          import.meta.env.VITE_API_KEY
-        }`
+        `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -39,7 +35,7 @@ const City = () => {
           console.error("Error fetching forecast data: ", error);
         });
     }
-  }, [city]);
+  }, [city, apiKey]);
 
   return (
     <div>
