@@ -10,6 +10,7 @@ const Home = ({ weatherData, forecastData, handleSearch, apiKey }) => {
     ? JSON.parse(localStorage.getItem("cities"))
     : [];
 
+  // If weatherData is not available, show the search prompt and last searched cities
   if (!weatherData) {
     return (
       <div>
@@ -18,7 +19,8 @@ const Home = ({ weatherData, forecastData, handleSearch, apiKey }) => {
         <ul>
           {cityList.map((city, index) => (
             <li key={index}>
-              <button onClick={() => handleSearch(city)}>{city}</button>
+              {/* Link to the City component with the specified city name */}
+              <Link to={`/city/${city}`}>{city}</Link>
             </li>
           ))}
         </ul>
@@ -26,6 +28,7 @@ const Home = ({ weatherData, forecastData, handleSearch, apiKey }) => {
     );
   }
 
+  // If weatherData is available, show the WeatherDetails component and the forecast link
   // convert temperature from Kelvin to Celsius
   const temp = Math.round(weatherData.main.temp - 273.15);
   const minTemp = Math.round(weatherData.main.temp_min - 273.15);
@@ -34,7 +37,7 @@ const Home = ({ weatherData, forecastData, handleSearch, apiKey }) => {
 
   return (
     <div>
-      <WeatherDetails data={weatherData} />
+      <WeatherDetails weatherData={weatherData} />
       <Link to='/forecast'>Show Forecast</Link>{" "}
       {/* Link to the Forecast view */}
       <h2>Last searched cities:</h2>

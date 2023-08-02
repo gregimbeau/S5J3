@@ -1,8 +1,12 @@
+// App.jsx
+
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import RoutesComponent from "./routes";
-import axios from "axios";
+import Home from "./pages/Home";
+import WeatherDetails from "./pages/WeatherDetails";
+import Forecast from "./pages/Forecast";
+import City from "./pages/City";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,50 +29,79 @@ function App() {
     setCityList(updatedCityList);
     // Save the updated city list to local storage
     localStorage.setItem("cities", JSON.stringify(updatedCityList));
+    // Fetch weather and forecast data for the city
+    getWeatherAndForecastData(term);
   };
+
+  const getWeatherAndForecastData = (cityName) => {
+    fetch(
+      `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${
+        import.meta.env.VITE_API_KEY
+      }`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setWeatherData(data);
+        // After weatherData is set, get the forecast data for the same city
+        getForecastData(cityName);
+      })
+      .catch((error) => {
+        console.log("Error fetching weather data: ", error);
+      });
+  };
+
   const getForecastData = (cityName) => {
-    axios
-      .get(
-        `http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${
-          import.meta.env.VITE_API_KEY
-        }`
-      )
-      .then((response) => {
-        setForecastData(response.data.list);
+    fetch(
+      `http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${
+        import.meta.env.VITE_API_KEY
+      }`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setForecastData(data.list);
       })
       .catch((error) => {
         console.log("Error fetching forecast data: ", error);
       });
   };
 
-  useEffect(() => {
-    if (searchTerm) {
-      axios
-        .get(
-          `http://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&appid=${
-            import.meta.env.VITE_API_KEY
-          }`
-        )
-        .then((response) => {
-          setWeatherData(response.data);
-          // After weatherData is set, we get the forecast data for the same city
-          getForecastData(response.data.name);
-        })
-        .catch((error) => {
-          console.log("Error fetching weather data: ", error);
-        });
-    }
-  }, [searchTerm]);
-
   return (
     <Router>
       <Navbar onSearch={handleSearch} />
-      <RoutesComponent
-        weatherData={weatherData}
-        forecastData={forecastData}
-        handleSearch={handleSearch}
-        apiKey={import.meta.env.VITE_API_KEY}
-      />
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <Home
+              weatherData={weatherData}
+              handleSearch={handleSearch}
+              apiKey={import.meta.env.VITE_API_KEY}
+              cityList={cityList}
+            />
+          }
+        />
+        <Route
+          path='/city/:city'
+          element={
+            <>
+              <WeatherDetails
+                weatherData={weatherData}
+                handleSearch={handleSearch}
+                apiKey={import.meta.env.VITE_API_KEY}
+              />
+            </>
+          }
+        />
+        <Route
+          path='/forecast/:city'
+          element={
+            <Forecast
+              forecastData={forecastData}
+              apiKey={import.meta.env.VITE_API_KEY}
+            />
+          }
+        />
+      </Routes>
     </Router>
   );
 }

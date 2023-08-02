@@ -3,38 +3,33 @@
 import React from "react";
 import { useRoutes } from "react-router-dom";
 import Home from "./pages/Home";
+import Forecast from "./pages/Forecast";
 import City from "./pages/City";
-import Forecast from "@/pages/Forecast";
-import WeatherDetails from "@/pages/WeatherDetails";
+import WeatherDetails from "./pages/WeatherDetails";
 
-const RoutesComponent = ({ weatherData, forecastData, handleSearch }) => {
+const RoutesComponent = ({ apiKey }) => {
+  const cityList = localStorage.getItem("cities")
+    ? JSON.parse(localStorage.getItem("cities"))
+    : [];
+
   let element = useRoutes([
     {
       path: "/",
-      element: (
-        <Home
-          weatherData={weatherData}
-          forecastData={forecastData}
-          handleSearch={handleSearch}
-        />
-      ), // pass forecastData to Home
+      element: <Home />,
     },
     {
-      path: "/city/:id",
+      // Update the route for city-specific views
+      path: "/city/:city",
       element: <City />,
     },
     {
-      path: "/forecast",
-      element: (
-        <Forecast
-          forecastData={forecastData}
-          city={forecastData && forecastData[0] && forecastData[0].name}
-        />
-      ), // Pass the city prop to the Forecast component
+      // Add a route for the WeatherDetails view
+      path: "/:city",
+      element: <WeatherDetails apiKey={apiKey} />,
     },
     {
-      path: "/weather-details/:id",
-      element: <WeatherDetails />,
+      path: "/forecast/:city",
+      element: <Forecast apiKey={apiKey} />,
     },
   ]);
 
