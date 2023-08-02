@@ -1,34 +1,25 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import ForecastCard from "@/components/ForecastCard";
 
-const Forecast = ({ forecastData }) => {
-  // Si les données de prévision sont fournies
+const Forecast = ({ forecastData, apiKey }) => {
   if (forecastData) {
     return (
-      <div>
-        <h2>Prévisions pour les 5 prochains jours</h2>
-        {forecastData.map((data) => (
-          <div key={data.dt}>
-            <h3>{data.dt_txt}</h3>
-            <p>Température : {data.main.temp}</p>
-            <p>Température ressentie : {data.main.feels_like}</p>
-            <p>Pression : {data.main.pressure}</p>
-            <p>Humidité : {data.main.humidity}</p>
-            <p>Vent : {data.wind.speed}</p>
-            <p>Conditions météorologiques : {data.weather[0].description}</p>
-            <Link to={`/forecast/${data.dt}`}>
-              Voir les détails météorologiques pour {data.dt_txt}
-            </Link>
-          </div>
-        ))}
+      <div className='forecast-list'>
+        {forecastData.map((data, index) => {
+          // Only take the data from the 12:00 time slot for the next 5 days
+          if (index % 8 === 0) {
+            return <ForecastCard key={data.dt} data={data} />;
+          }
+          return null;
+        })}
       </div>
     );
   }
 
-  // Si les données de prévision ne sont pas encore fournies (par exemple, pendant le chargement)
+  // If the forecast data is not yet provided (e.g., during loading)
   return (
     <div>
-      <p>Chargement des prévisions...</p>
+      <p>Loading forecast...</p>
     </div>
   );
 };

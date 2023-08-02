@@ -4,14 +4,20 @@ import React from "react";
 import { useRoutes } from "react-router-dom";
 import Home from "./pages/Home";
 import City from "./pages/City";
-import Forecast from "./pages/Forecast";
-import WeatherDetails from "./pages/WeatherDetails";
+import Forecast from "@/pages/Forecast";
+import WeatherDetails from "@/pages/WeatherDetails";
 
 const RoutesComponent = ({ weatherData, forecastData, handleSearch }) => {
   let element = useRoutes([
     {
       path: "/",
-      element: <Home weatherData={weatherData} handleSearch={handleSearch} />,
+      element: (
+        <Home
+          weatherData={weatherData}
+          forecastData={forecastData}
+          handleSearch={handleSearch}
+        />
+      ), // pass forecastData to Home
     },
     {
       path: "/city/:id",
@@ -29,4 +35,5 @@ const RoutesComponent = ({ weatherData, forecastData, handleSearch }) => {
 
   return element;
 };
+
 export default RoutesComponent;

@@ -2,8 +2,10 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
+import WeatherDetails from "./WeatherDetails"; 
+import Forecast from "./Forecast";
 
-const Home = ({ weatherData, handleSearch }) => {
+const Home = ({ weatherData, forecastData, handleSearch, apiKey }) => {
   const cityList = localStorage.getItem("cities")
     ? JSON.parse(localStorage.getItem("cities"))
     : [];
@@ -32,15 +34,8 @@ const Home = ({ weatherData, handleSearch }) => {
 
   return (
     <div>
-      <h1>{weatherData.name}</h1>
-      <img src={iconUrl} alt={weatherData.weather[0].description} />
-      <p>Current temperature: {temp}°C</p>
-      <p>
-        Low: {minTemp}°C / High: {maxTemp}°C
-      </p>
-      <p>Humidity: {weatherData.main.humidity}%</p>
-      <p>Wind speed: {weatherData.wind.speed} m/s</p>
-      {/* add any other information you need here */}
+      <WeatherDetails data={weatherData} />
+      <Forecast forecastData={forecastData} apiKey={apiKey} />
       <h2>Last searched cities:</h2>
       <ul>
         {cityList.map((city, index) => (
@@ -52,4 +47,5 @@ const Home = ({ weatherData, handleSearch }) => {
     </div>
   );
 };
+
 export default Home;

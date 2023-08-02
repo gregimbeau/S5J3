@@ -1,24 +1,24 @@
 import React from "react";
 
-const WeatherDetails = ({ weatherDetails }) => {
-  // Si les détails météo sont fournis
-  if (weatherDetails) {
-    return (
-      <div>
-        <p>Température : {weatherDetails.temp} °C</p>
-        <p>Température ressentie : {weatherDetails.feels_like} °C</p>
-        <p>Pression atmosphérique : {weatherDetails.pressure} hPa</p>
-        <p>Humidité : {weatherDetails.humidity} %</p>
-        <p>Vitesse du vent : {weatherDetails.wind_speed} m/s</p>
-        {/* Ajoutez ici d'autres détails météo que vous souhaitez afficher */}
-      </div>
-    );
-  }
+const WeatherDetails = ({ data }) => {
+  // Use the data prop to display more detailed weather information for the day
 
-  // Si les détails météo ne sont pas encore fournis (par exemple, pendant le chargement)
+  const temp = Math.round(data.main.temp - 273.15);
+  const minTemp = Math.round(data.main.temp_min - 273.15);
+  const maxTemp = Math.round(data.main.temp_max - 273.15);
+  const iconUrl = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+
   return (
-    <div>
-      <p>Chargement des détails météo...</p>
+    <div className='weather-details'>
+      <h1>{data.name}</h1>
+      <img src={iconUrl} alt={data.weather[0].description} />
+      <p>Temperature: {temp}°C</p>
+      <p>
+        Low: {minTemp}°C / High: {maxTemp}°C
+      </p>
+      <p>Humidity: {data.main.humidity}%</p>
+      <p>Wind speed: {data.wind.speed} m/s</p>
+      {/* add any other detailed information you need here */}
     </div>
   );
 };
