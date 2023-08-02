@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import WeatherDetails from "./WeatherDetails"; 
+import WeatherDetails from "./WeatherDetails";
 import Forecast from "./Forecast";
 
 const Home = ({ weatherData, forecastData, handleSearch, apiKey }) => {
@@ -35,7 +35,8 @@ const Home = ({ weatherData, forecastData, handleSearch, apiKey }) => {
   return (
     <div>
       <WeatherDetails data={weatherData} />
-      <Forecast forecastData={forecastData} apiKey={apiKey} />
+      <Link to='/forecast'>Show Forecast</Link>{" "}
+      {/* Link to the Forecast view */}
       <h2>Last searched cities:</h2>
       <ul>
         {cityList.map((city, index) => (

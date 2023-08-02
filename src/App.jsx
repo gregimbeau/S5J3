@@ -41,25 +41,24 @@ function App() {
       });
   };
 
-useEffect(() => {
-  if (searchTerm) {
-    axios
-      .get(
-        `http://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&appid=${
-          import.meta.env.VITE_API_KEY
-        }`
-      )
-      .then((response) => {
-        setWeatherData(response.data);
-        // After weatherData is set, we get the forecast data for the same city
-        getForecastData(response.data.name);
-      })
-      .catch((error) => {
-        console.log("Error fetching weather data: ", error);
-      });
-  }
-}, [searchTerm]);
-
+  useEffect(() => {
+    if (searchTerm) {
+      axios
+        .get(
+          `http://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&appid=${
+            import.meta.env.VITE_API_KEY
+          }`
+        )
+        .then((response) => {
+          setWeatherData(response.data);
+          // After weatherData is set, we get the forecast data for the same city
+          getForecastData(response.data.name);
+        })
+        .catch((error) => {
+          console.log("Error fetching weather data: ", error);
+        });
+    }
+  }, [searchTerm]);
 
   return (
     <Router>
